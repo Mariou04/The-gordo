@@ -2,7 +2,7 @@ export default function Ubicacion() {
   return (
     <section id="ubicacion">
       <h2>📍 Nuestra Ubicación</h2>
-      <p className="ubicacion-sub">¡Encuéntranos en Piedradura... digo, en Cúcuta!</p>
+      <p className="ubicacion-sub">¡Encuéntranos en Piedradura... digo, en Bucaramanga!</p>
 
       <div className="map-wrapper">
         <iframe
