@@ -234,57 +234,127 @@ nav {
 }
 .modal-close:hover { background: rgba(255,255,255,0.4); }
 .modal-body {
-  padding: 1.5rem 2rem 2rem;
+  padding: 1.5rem 1.5rem 1.5rem;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }
 
-.menu-item {
-  display: flex; align-items: center; gap: 1rem;
-  background: var(--gris-claro);
-  border-radius: 14px;
-  padding: 1rem 1.2rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  border: 3px solid transparent;
-  transition: border-color .25s, background .25s, transform .2s;
-  position: relative;
+.divider {
+  border-top: 2px dashed #eee;
+  margin: 1rem 0;
 }
-.menu-item:hover {
-  background: #FFF8E1;
-  transform: translateX(4px);
-}
-.menu-item.selected {
-  border-color: var(--rojo);
-  background: #FFF3F3;
-}
-.menu-item-emoji { font-size: 2.8rem; flex-shrink: 0; }
-.menu-item-info { flex: 1; min-width: 0; }
-.menu-item-info h4 {
+
+.section-label {
   font-family: 'Fredoka One', cursive;
-  font-size: 1.2rem;
-  color: var(--negro);
+  color: #555;
+  font-size: .95rem;
+  margin-bottom: .6rem;
 }
-.menu-item-info p { font-size: .88rem; color: #666; margin-top: .2rem; }
-.menu-item-price {
-  font-family: 'Bangers', cursive;
-  font-size: 1.5rem;
-  color: var(--rojo);
+
+.product-list-label {
+  font-family: 'Fredoka One', cursive;
+  color: #888;
+  font-size: .8rem;
+  text-transform: uppercase;
   letter-spacing: 1px;
-  white-space: nowrap;
+  margin-bottom: .6rem;
 }
-.menu-check {
-  position: absolute; top: .7rem; right: .7rem;
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .8rem;
+  background: var(--gris-claro);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s;
+  border: 2px solid transparent;
+}
+.product-item:hover {
+  background: #FFF8E1;
+}
+.product-item.selected {
+  background: #FFF3F3;
+  border-color: var(--rojo);
+}
+
+.product-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--blanco);
+  flex-shrink: 0;
+  transition: all .15s;
+}
+.product-check.checked {
+  background: var(--rojo);
+  border-color: var(--rojo);
+}
+
+.product-emoji {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: .95rem;
+  color: var(--negro);
+  line-height: 1.2;
+}
+
+.product-desc {
+  font-size: .78rem;
+  color: #888;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-price {
+  font-family: 'Bangers', cursive;
+  font-size: 1.2rem;
+  color: var(--rojo);
+  white-space: nowrap;
+  letter-spacing: .5px;
+  flex-shrink: 0;
+}
+
+.cart-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: var(--rojo);
   color: var(--blanco);
-  border-radius: 50%;
-  width: 24px; height: 24px;
-  display: none;
-  align-items: center; justify-content: center;
+  padding: .6rem 1rem;
+  border-radius: 10px;
+  margin-top: .6rem;
+  font-family: 'Fredoka One', cursive;
   font-size: .9rem;
 }
-.menu-item.selected .menu-check { display: flex; }
+.cart-total {
+  font-size: 1.1rem;
+}
 
 .modal-actions {
   display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;
@@ -348,62 +418,38 @@ nav {
 /* ─── MESAS ─── */
 .mesa-section { display: none; }
 .mesa-section.show { display: block; }
-.restaurant-map {
-  background: #F0E8D5;
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-top: 1rem;
-  min-height: 340px;
-  border: 3px solid #C8B89A;
-  background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 39px, #C8B89A66 39px, #C8B89A66 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, #C8B89A66 39px, #C8B89A66 40px);
-  background-size: 40px 40px;
-}
-.map-label {
-  font-family: 'Bangers', cursive;
-  font-size: 1.1rem;
-  color: #8D6E63;
-  letter-spacing: 2px;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-.mesas-grid {
+
+.mesas-grid-sm {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
-  padding: .5rem;
+  gap: 8px;
 }
-.mesa {
+.mesa-sm {
   background: var(--blanco);
-  border: 3px solid #8D6E63;
-  border-radius: 10px;
+  border: 2px solid #8D6E63;
+  border-radius: 8px;
   aspect-ratio: 1;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: all .25s;
   font-family: 'Fredoka One', cursive;
-  font-size: .85rem;
+  font-size: .8rem;
   color: #5D4037;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12), inset 0 -3px 0 #8D6E63;
-  gap: .2rem;
-  position: relative;
+  transition: all .2s;
+  gap: 2px;
 }
-.mesa:hover {
+.mesa-sm:hover {
   background: #FFF8E1;
   border-color: var(--rojo);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(229,57,53,0.25), inset 0 -3px 0 var(--rojo);
+  transform: translateY(-2px);
 }
-.mesa.selected {
+.mesa-sm.selected {
   background: var(--amarillo);
   border-color: var(--rojo);
   color: var(--rojo-oscuro);
-  transform: translateY(-3px);
 }
-.mesa-num { font-size: 1.4rem; }
-.mesa-icon { font-size: 1.1rem; }
 
 /* ─── RESERVA ─── */
 .reserva-grid {
@@ -463,19 +509,24 @@ nav {
 .popup-row {
   display: flex;
   justify-content: space-between;
-  padding: .4rem 0;
+  padding: .35rem 0;
   gap: .5rem;
 }
 .popup-row + .popup-row {
   border-top: 1px solid #C8E6C9;
 }
+.popup-total {
+  border-top: 2px solid #4CAF50 !important;
+  margin-top: .3rem;
+  padding-top: .5rem !important;
+}
 .popup-label {
-  font-size: .9rem;
+  font-size: .85rem;
   color: #666;
   font-weight: 600;
 }
 .popup-value {
-  font-size: .9rem;
+  font-size: .85rem;
   color: var(--negro);
   font-weight: 700;
   text-align: right;
@@ -562,11 +613,13 @@ footer span { color: var(--amarillo); }
   #horario { padding: 3rem 1rem 2rem; }
   .meal-cards { flex-direction: column; align-items: center; }
   .meal-card { width: 100%; }
-  .modal { border-radius: 18px; }
-  .modal-header { padding: 1.2rem 1.5rem; }
-  .modal-header h2 { font-size: 1.5rem; }
-  .modal-body { padding: 1rem 1.2rem 1.5rem; }
-  .mesas-grid { grid-template-columns: repeat(5, 1fr); gap: .5rem; }
+  .modal { border-radius: 18px; max-width: 95vw; }
+  .modal-header { padding: 1rem 1.2rem; }
+  .modal-header h2 { font-size: 1.3rem; }
+  .modal-body { padding: 1rem 1rem 1.2rem; }
+  .mesas-grid-sm { gap: 6px; }
+  .product-name { font-size: .85rem; }
+  .product-price { font-size: 1rem; }
   .reserva-grid { flex-direction: column; }
   .popup { padding: 1.5rem 1.2rem; }
   .popup-actions { flex-direction: column; }

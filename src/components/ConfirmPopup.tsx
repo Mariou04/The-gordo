@@ -1,4 +1,5 @@
 import type { PedidoConfirmado } from '../types'
+import { formatearPrecio } from '../types'
 
 interface Props {
   pedido: PedidoConfirmado
@@ -6,8 +7,7 @@ interface Props {
 }
 
 export default function ConfirmPopup({ pedido, onCerrar }: Props) {
-  const entrega =
-    pedido.delivery === 'aqui' ? 'Comer aquí' : 'Para llevar'
+  const entrega = pedido.delivery === 'aqui' ? 'Comer aquí' : 'Para llevar'
 
   return (
     <div className="modal-overlay active popup-overlay" onClick={onCerrar}>
@@ -16,14 +16,19 @@ export default function ConfirmPopup({ pedido, onCerrar }: Props) {
         <h3>¡PEDIDO CONFIRMADO!</h3>
 
         <div className="popup-body">
-          <div className="popup-row">
-            <span className="popup-label">Producto</span>
-            <span className="popup-value">{pedido.item.nombre}</span>
+          {pedido.items.map((item, i) => (
+            <div className="popup-row" key={i}>
+              <span className="popup-value" style={{ textAlign: 'left' }}>{item.nombre}</span>
+              <span className="popup-label">{item.precio}</span>
+            </div>
+          ))}
+          <div className="popup-row popup-total">
+            <span className="popup-value">Total</span>
+            <span className="popup-label">{formatearPrecio(pedido.total)}</span>
           </div>
-          <div className="popup-row">
-            <span className="popup-label">Precio</span>
-            <span className="popup-value">{pedido.item.precio}</span>
-          </div>
+
+          <div style={{ borderTop: '1px solid #C8E6C9', margin: '.5rem 0' }} />
+
           <div className="popup-row">
             <span className="popup-label">Tipo</span>
             <span className="popup-value">{entrega}</span>
@@ -34,23 +39,27 @@ export default function ConfirmPopup({ pedido, onCerrar }: Props) {
               <span className="popup-value">#{pedido.mesa}</span>
             </div>
           )}
-          <div className="popup-row">
-            <span className="popup-label">Fecha</span>
-            <span className="popup-value">{pedido.fecha}</span>
-          </div>
-          <div className="popup-row">
-            <span className="popup-label">Hora</span>
-            <span className="popup-value">{pedido.hora}</span>
-          </div>
+          {pedido.delivery === 'aqui' && (
+            <>
+              <div className="popup-row">
+                <span className="popup-label">Fecha</span>
+                <span className="popup-value">{pedido.fecha}</span>
+              </div>
+              <div className="popup-row">
+                <span className="popup-label">Hora</span>
+                <span className="popup-value">{pedido.hora}</span>
+              </div>
+            </>
+          )}
           <div className="popup-row">
             <span className="popup-label">Menú</span>
             <span className="popup-value">{pedido.tipo === 'almuerzo' ? 'Almuerzo' : 'Noche'}</span>
           </div>
         </div>
 
-        <p style={{ marginTop: '.5rem', color: '#555' }}>
+        <p style={{ marginTop: '.5rem', color: '#555', fontSize: '.9rem' }}>
           {pedido.tipo === 'almuerzo'
-            ? 'Tu pedido está siendo preparado al mejor estilo Picapiedra 🦕'
+            ? 'Preparándose al mejor estilo Picapiedra 🦕'
             : 'Prepárate para una noche de sabor prehistórico 🔥'}
         </p>
 

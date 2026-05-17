@@ -7,10 +7,17 @@ export interface MenuItem {
   nombre: string
   descripcion: string
   precio: string
+  precioNum: number
+}
+
+export interface ItemSeleccionado {
+  nombre: string
+  precio: string
+  precioNum: number
 }
 
 export interface ModalState {
-  item: { nombre: string; precio: string } | null
+  items: ItemSeleccionado[]
   delivery: DeliveryType | null
   mesa: number | null
   fecha: string
@@ -18,7 +25,8 @@ export interface ModalState {
 }
 
 export interface PedidoConfirmado {
-  item: { nombre: string; precio: string }
+  items: ItemSeleccionado[]
+  total: number
   delivery: DeliveryType
   mesa: number | null
   fecha: string
@@ -31,22 +39,25 @@ export const menuAlmuerzo: MenuItem[] = [
     id: 'costilla-dino',
     emoji: '🦴',
     nombre: 'Costilla de Dino (Pablo Mármol)',
-    descripcion: 'La costilla prehistórica de Pablo Mármol. ¡Tan grande que vuelca el auto!',
+    descripcion: 'Tan grande que vuelca el auto',
     precio: '$15.000',
+    precioNum: 15000,
   },
   {
     id: 'pollo-pajaro',
     emoji: '🐔',
     nombre: 'Pollo Pájaro Temprano (Pedro Picapiedra)',
-    descripcion: 'El favorito de Pedro. Criado en Piedradura, asado en leña de bambú.',
+    descripcion: 'Criado en Piedradura, asado en leña de bambú',
     precio: '$15.000',
+    precioNum: 15000,
   },
   {
     id: 'mamut-salsa',
     emoji: '🦣',
     nombre: 'Mamut en Salsa Wilma',
-    descripcion: 'Receta secreta de Wilma Picapiedra. Suave, jugoso y con sabor a era glacial.',
+    descripcion: 'Receta secreta de Wilma Picapiedra',
     precio: '$15.000',
+    precioNum: 15000,
   },
 ]
 
@@ -55,43 +66,49 @@ export const menuNoche: MenuItem[] = [
     id: 'hamburguesa-pablo',
     emoji: '🍔',
     nombre: 'Hamburguesa Pablo Mármol',
-    descripcion: 'Doble carne + tocino + queso fundido. Tan grande como el barrigón de Pablo.',
+    descripcion: 'Doble carne + tocino + queso fundido',
     precio: '$16.000',
+    precioNum: 16000,
   },
   {
     id: 'burger-pedro',
     emoji: '🍟',
     nombre: 'Burger Pedro Picapiedra',
-    descripcion: 'Clasicaza sencilla con lechuga, tomate y la salsa secreta Bedrock.',
+    descripcion: 'Clasicaza con lechuga, tomate y salsa Bedrock',
     precio: '$14.000',
+    precioNum: 14000,
   },
   {
     id: 'salchipapa-bambam',
     emoji: '🌭',
     nombre: 'Salchipapa Bambam',
-    descripcion: 'Papas crocantes + salchicha + salsas. La combo favorita del bebé de Piedradura.',
+    descripcion: 'Papas crocantes + salchicha + salsas',
     precio: '$12.000',
+    precioNum: 12000,
   },
   {
     id: 'perro-dino',
     emoji: '🌮',
     nombre: 'Perro Caliente Dino',
-    descripcion: 'Hot dog estilo The Gordo: papa rallada, piña y salsas especiales. ¡Rawr!',
+    descripcion: 'Hot dog con papa rallada, piña y salsas',
     precio: '$11.000',
+    precioNum: 11000,
   },
   {
     id: 'alitas-ptero',
     emoji: '🍗',
     nombre: 'Alitas Pterodáctilo',
-    descripcion: '8 alitas BBQ volando directo desde la era del Jurásico. ¡Atrápalas!',
+    descripcion: '8 alitas BBQ del Jurásico',
     precio: '$18.000',
+    precioNum: 18000,
   },
   {
     id: 'mega-papas',
     emoji: '🍟',
     nombre: 'Mega Papas Mamut',
-    descripcion: 'Porción enorme de papas a la francesa. ¡Del tamaño de un mamut!',
+    descripcion: 'Porción enorme a la francesa',
     precio: '$10.000',
+    precioNum: 10000,
   },
 ]
 
@@ -104,4 +121,8 @@ export function manana(): string {
   const d = new Date()
   d.setDate(d.getDate() + 1)
   return d.toISOString().slice(0, 10)
+}
+
+export function formatearPrecio(n: number): string {
+  return '$' + n.toLocaleString('es-CO')
 }

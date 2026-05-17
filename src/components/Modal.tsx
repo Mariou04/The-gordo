@@ -1,7 +1,6 @@
-import { useState, useRef } from 'react'
-import type { MenuType, DeliveryType, ModalState } from '../types'
-import type { PedidoConfirmado } from '../types'
-import { menuAlmuerzo, menuNoche, hoy, manana } from '../types'
+import { useState, useMemo } from 'react'
+import type { MenuType, DeliveryType, ModalState, PedidoConfirmado, MenuItem } from '../types'
+import { menuAlmuerzo, menuNoche, hoy, manana, formatearPrecio } from '../types'
 import ConfirmPopup from './ConfirmPopup'
 
 interface Props {
@@ -13,45 +12,64 @@ const fechaHoy = hoy()
 const fechaManana = manana()
 
 function estadoInicial(): ModalState {
-  return { item: null, delivery: null, mesa: null, fecha: fechaHoy, hora: '12:00' }
+  return { items: [], delivery: null, mesa: null, fecha: fechaHoy, hora: '12:00' }
 }
 
 export default function Modal({ tipo, onCerrar }: Props) {
   const [state, setState] = useState<ModalState>(estadoInicial)
   const [confirmado, setConfirmado] = useState<PedidoConfirmado | null>(null)
-  const bodyRef = useRef<HTMLDivElement>(null)
 
-  const items = tipo === 'almuerzo' ? menuAlmuerzo : menuNoche
+  const menu = tipo === 'almuerzo' ? menuAlmuerzo : menuNoche
   const titulo = tipo === 'almuerzo' ? 'Menú del Almuerzo' : 'Menú de la Noche'
   const emoji = tipo === 'almuerzo' ? '🦕' : '🌙'
-  const desc =
-    tipo === 'almuerzo'
-      ? 'Todos los almuerzos incluyen <strong>sopa, arroz, ensalada y jugo</strong>. Solo cambia la proteína 🦴'
-      : 'Antojos nocturnos al estilo Piedradura 🔥 ¡Sabor que despierta dinosaurios!'
 
-  function selectItem(nombre: string, precio: string) {
-    setState((s) => ({ ...s, item: { nombre, precio } }))
+  function toggleItem(item: MenuItem) {
+    setState((s) => {
+      const existe = s.items.find((i) => i.nombre === item.nombre)
+      if (existe) {
+        return { ...s, items: s.items.filter((i) => i.nombre !== item.nombre) }
+      }
+      return {
+        ...s,
+        items: [
+          ...s.items,
+          { nombre: item.nombre, precio: item.precio, precioNum: item.precioNum },
+        ],
+      }
+    })
   }
 
   function selectDelivery(d: DeliveryType) {
-    setState((s) => ({ ...s, delivery: d, mesa: d !== 'aqui' ? null : s.mesa }))
-    if (d === 'aqui' && bodyRef.current) {
-      setTimeout(() => {
-        bodyRef.current?.querySelector('.mesa-section')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      }, 50)
-    }
+    setState((s) => ({
+      ...s,
+      delivery: d,
+      mesa: d !== 'aqui' ? null : s.mesa,
+    }))
   }
 
   function selectMesa(num: number) {
     setState((s) => ({ ...s, mesa: num }))
   }
 
+  const total = useMemo(
+    () => state.items.reduce((sum, i) => sum + i.precioNum, 0),
+    [state.items],
+  )
+
   function confirmar() {
     const s = state
-    if (!s.item) { return }
-    if (!s.delivery) { return }
-    if (s.delivery === 'aqui' && !s.mesa) { return }
-    setConfirmado({ ...s, tipo } as PedidoConfirmado)
+    if (s.items.length === 0) return
+    if (!s.delivery) return
+    if (s.delivery === 'aqui' && !s.mesa) return
+    setConfirmado({
+      items: s.items,
+      total,
+      delivery: s.delivery,
+      mesa: s.mesa,
+      fecha: s.delivery === 'aqui' ? s.fecha : '',
+      hora: s.delivery === 'aqui' ? s.hora : '',
+      tipo,
+    })
   }
 
   return (
@@ -66,29 +84,41 @@ export default function Modal({ tipo, onCerrar }: Props) {
             <h2>{titulo}</h2>
             <button className="modal-close" onClick={onCerrar}>✕</button>
           </div>
-          <div className="modal-body" ref={bodyRef}>
-            <p style={{ color: '#888', marginBottom: '1.2rem', fontSize: '.95rem' }} dangerouslySetInnerHTML={{ __html: desc }} />
 
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className={`menu-item${state.item?.nombre === item.nombre ? ' selected' : ''}`}
-                onClick={() => selectItem(item.nombre, item.precio)}
-              >
-                <div className="menu-item-emoji">{item.emoji}</div>
-                <div className="menu-item-info">
-                  <h4>{item.nombre}</h4>
-                  <p>{item.descripcion}</p>
-                </div>
-                <div className="menu-item-price">{item.precio}</div>
-                <div className="menu-check">✓</div>
+          <div className="modal-body">
+            <div className="product-list-label">Productos</div>
+            <div className="product-list">
+              {menu.map((item) => {
+                const sel = state.items.some((i) => i.nombre === item.nombre)
+                return (
+                  <div
+                    key={item.id}
+                    className={`product-item${sel ? ' selected' : ''}`}
+                    onClick={() => toggleItem(item)}
+                  >
+                    <div className={`product-check${sel ? ' checked' : ''}`}>
+                      {sel ? '✓' : ''}
+                    </div>
+                    <span className="product-emoji">{item.emoji}</span>
+                    <div className="product-info">
+                      <div className="product-name">{item.nombre}</div>
+                      <div className="product-desc">{item.descripcion}</div>
+                    </div>
+                    <span className="product-price">{item.precio}</span>
+                  </div>
+                )
+              })}
+            </div>
+
+            {state.items.length > 0 && (
+              <div className="cart-bar">
+                <span>{state.items.length} producto{state.items.length > 1 ? 's' : ''}</span>
+                <span className="cart-total">{formatearPrecio(total)}</span>
               </div>
-            ))}
+            )}
 
-            <div style={{ borderTop: '2px dashed #eee', margin: '1.2rem 0' }} />
-            <p style={{ fontFamily: "'Fredoka One'", color: '#555', fontSize: '.95rem', marginBottom: '.7rem' }}>
-              ¿Cómo lo vas a disfrutar?
-            </p>
+            <div className="divider" />
+            <p className="section-label">¿Cómo lo vas a disfrutar?</p>
             <div className="delivery-btns">
               <button
                 className={`delivery-btn${state.delivery === 'llevar' ? ' active' : ''}`}
@@ -104,48 +134,42 @@ export default function Modal({ tipo, onCerrar }: Props) {
               </button>
             </div>
 
-            <div className={`mesa-section${state.delivery === 'aqui' ? ' show' : ''}`}>
-              <div style={{ borderTop: '2px dashed #eee', margin: '1.2rem 0' }} />
-              <p style={{ fontFamily: "'Fredoka One'", color: '#555', fontSize: '.95rem', marginBottom: '.5rem' }}>
-                Selecciona tu mesa 🗺️
-              </p>
-              <div className="restaurant-map">
-                <div className="map-label">🏪 PLANTA THE GORDO</div>
-                <div className="mesas-grid">
+            {state.delivery === 'aqui' && (
+              <>
+                <div className="divider" />
+                <p className="section-label">Selecciona tu mesa 🗺️</p>
+                <div className="mesas-grid-sm">
                   {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
                     <div
                       key={num}
-                      className={`mesa${state.mesa === num ? ' selected' : ''}`}
+                      className={`mesa-sm${state.mesa === num ? ' selected' : ''}`}
                       onClick={() => selectMesa(num)}
                     >
-                      <span className="mesa-icon">🪑</span>
-                      <span className="mesa-num">{num}</span>
+                      🪑 {num}
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
 
-            <div style={{ borderTop: '2px dashed #eee', margin: '1.2rem 0' }} />
-            <p style={{ fontFamily: "'Fredoka One'", color: '#555', fontSize: '.95rem', marginBottom: '.7rem' }}>
-              🗓️ Reserva
-            </p>
-            <div className="reserva-grid">
-              <select
-                className="reserva-select"
-                value={state.fecha}
-                onChange={(e) => setState((s) => ({ ...s, fecha: e.target.value }))}
-              >
-                <option value={fechaHoy}>Hoy ({fechaHoy})</option>
-                <option value={fechaManana}>Mañana ({fechaManana})</option>
-              </select>
-              <input
-                type="time"
-                className="reserva-input"
-                value={state.hora}
-                onChange={(e) => setState((s) => ({ ...s, hora: e.target.value }))}
-              />
-            </div>
+                <div className="divider" />
+                <p className="section-label">🗓️ Reserva</p>
+                <div className="reserva-grid">
+                  <select
+                    className="reserva-select"
+                    value={state.fecha}
+                    onChange={(e) => setState((s) => ({ ...s, fecha: e.target.value }))}
+                  >
+                    <option value={fechaHoy}>Hoy ({fechaHoy})</option>
+                    <option value={fechaManana}>Mañana ({fechaManana})</option>
+                  </select>
+                  <input
+                    type="time"
+                    className="reserva-input"
+                    value={state.hora}
+                    onChange={(e) => setState((s) => ({ ...s, hora: e.target.value }))}
+                  />
+                </div>
+              </>
+            )}
 
             <div className="modal-actions">
               <button className="btn btn-primary" onClick={confirmar}>
