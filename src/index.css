@@ -452,28 +452,58 @@ nav {
 }
 
 /* ─── RESERVA ─── */
-.reserva-grid {
+.fecha-toggles {
   display: flex;
-  gap: 1rem;
-  margin-top: .5rem;
+  gap: .8rem;
 }
-.reserva-select,
-.reserva-input {
+.fecha-btn {
   flex: 1;
-  padding: .8rem 1rem;
+  padding: .7rem 1rem;
   border-radius: 12px;
   border: 2.5px solid #ddd;
   font-family: 'Fredoka One', cursive;
   font-size: 1rem;
-  color: var(--negro);
+  color: #888;
   background: var(--blanco);
-  transition: border-color .25s;
   cursor: pointer;
+  transition: all .2s;
 }
-.reserva-select:focus,
-.reserva-input:focus {
+.fecha-btn:hover {
   border-color: var(--rojo);
-  outline: none;
+  color: var(--rojo);
+}
+.fecha-btn.active {
+  border-color: var(--rojo);
+  background: var(--rojo);
+  color: var(--blanco);
+}
+
+.horas-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: .3rem;
+}
+.hora-chip {
+  padding: .55rem .3rem;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: .85rem;
+  color: #888;
+  background: var(--blanco);
+  cursor: pointer;
+  transition: all .2s;
+}
+.hora-chip:hover {
+  border-color: var(--rojo);
+  color: var(--rojo);
+}
+.hora-chip.selected {
+  border-color: var(--rojo);
+  background: var(--rojo);
+  color: var(--blanco);
 }
 
 /* ─── POPUP ─── */
@@ -620,7 +650,8 @@ footer span { color: var(--amarillo); }
   .mesas-grid-sm { gap: 6px; }
   .product-name { font-size: .85rem; }
   .product-price { font-size: 1rem; }
-  .reserva-grid { flex-direction: column; }
+  .horas-grid { grid-template-columns: repeat(4, 1fr); }
+  .fecha-toggles { flex-direction: column; gap: .5rem; }
   .popup { padding: 1.5rem 1.2rem; }
   .popup-actions { flex-direction: column; }
   #ubicacion { padding: 3rem 1rem; }

@@ -11,6 +11,27 @@ interface Props {
 const fechaHoy = hoy()
 const fechaManana = manana()
 
+const horasDisponibles = [
+  { label: '12 PM', value: '12:00' },
+  { label: '1 PM', value: '13:00' },
+  { label: '2 PM', value: '14:00' },
+  { label: '3 PM', value: '15:00' },
+  { label: '4 PM', value: '16:00' },
+  { label: '5 PM', value: '17:00' },
+  { label: '6 PM', value: '18:00' },
+  { label: '7 PM', value: '19:00' },
+  { label: '8 PM', value: '20:00' },
+  { label: '9 PM', value: '21:00' },
+  { label: '10 PM', value: '22:00' },
+  { label: '11 PM', value: '23:00' },
+  { label: '12 AM', value: '00:00' },
+  { label: '1 AM', value: '01:00' },
+  { label: '2 AM', value: '02:00' },
+  { label: '3 AM', value: '03:00' },
+  { label: '4 AM', value: '04:00' },
+  { label: '5 AM', value: '05:00' },
+]
+
 function estadoInicial(): ModalState {
   return { items: [], delivery: null, mesa: null, fecha: fechaHoy, hora: '12:00' }
 }
@@ -151,22 +172,33 @@ export default function Modal({ tipo, onCerrar }: Props) {
                 </div>
 
                 <div className="divider" />
-                <p className="section-label">🗓️ Reserva</p>
-                <div className="reserva-grid">
-                  <select
-                    className="reserva-select"
-                    value={state.fecha}
-                    onChange={(e) => setState((s) => ({ ...s, fecha: e.target.value }))}
+                <p className="section-label">🗓️ ¿Cuándo vienes?</p>
+                <div className="fecha-toggles">
+                  <button
+                    className={`fecha-btn${state.fecha === fechaHoy ? ' active' : ''}`}
+                    onClick={() => setState((s) => ({ ...s, fecha: fechaHoy }))}
                   >
-                    <option value={fechaHoy}>Hoy ({fechaHoy})</option>
-                    <option value={fechaManana}>Mañana ({fechaManana})</option>
-                  </select>
-                  <input
-                    type="time"
-                    className="reserva-input"
-                    value={state.hora}
-                    onChange={(e) => setState((s) => ({ ...s, hora: e.target.value }))}
-                  />
+                    📅 Hoy
+                  </button>
+                  <button
+                    className={`fecha-btn${state.fecha === fechaManana ? ' active' : ''}`}
+                    onClick={() => setState((s) => ({ ...s, fecha: fechaManana }))}
+                  >
+                    📅 Mañana
+                  </button>
+                </div>
+
+                <p className="section-label" style={{ marginTop: '.8rem' }}>🕐 ¿A qué hora?</p>
+                <div className="horas-grid">
+                  {horasDisponibles.map((h) => (
+                    <div
+                      key={h.value}
+                      className={`hora-chip${state.hora === h.value ? ' selected' : ''}`}
+                      onClick={() => setState((s) => ({ ...s, hora: h.value }))}
+                    >
+                      {h.label}
+                    </div>
+                  ))}
                 </div>
               </>
             )}
