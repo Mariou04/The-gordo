@@ -40,10 +40,15 @@ export default function Admin() {
 
   async function cargarPedidos() {
     setCargando(true)
+    setErr('')
     let q = supabase.from('pedidos').select('*').order('created_at', { ascending: false })
     if (filtro !== 'todos') q = q.eq('estado', filtro)
-    const { data } = await q
-    if (data) setPedidos(data as PedidoDB[])
+    const { data, error } = await q
+    if (error) {
+      setErr(error.message)
+    } else if (data) {
+      setPedidos(data as PedidoDB[])
+    }
     setCargando(false)
   }
 
@@ -117,11 +122,16 @@ export default function Admin() {
         </div>
       </div>
 
+      {err && (
+        <p style={{ textAlign: 'center', padding: '1rem', color: 'var(--rojo)', background: '#FFF0F0', margin: '1rem 2rem', borderRadius: '10px', fontSize: '.9rem' }}>
+          ❌ {err}
+        </p>
+      )}
       {cargando ? (
         <p style={{ textAlign: 'center', padding: '2rem', color: '#888' }}>Cargando...</p>
-      ) : pedidos.length === 0 ? (
+      ) : !err && pedidos.length === 0 ? (
         <p style={{ textAlign: 'center', padding: '2rem', color: '#888' }}>No hay pedidos</p>
-      ) : (
+      ) : !err && (
         <div className="admin-tabla-wrap">
           <table className="admin-tabla">
             <thead>
