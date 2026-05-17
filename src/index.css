@@ -45,11 +45,9 @@ nav {
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 .nav-logo {
-  font-family: 'Bangers', cursive;
-  font-size: 2rem;
-  color: var(--amarillo);
-  letter-spacing: 3px;
-  text-shadow: 2px 2px 0 var(--negro);
+  height: 48px;
+  width: auto;
+  display: block;
 }
 .nav-links {
   display: flex; gap: 1.5rem; list-style: none;
@@ -63,19 +61,41 @@ nav {
 }
 .nav-links a:hover { color: var(--amarillo); }
 
+@media (max-width: 480px) {
+  nav { padding: 0 1rem; }
+  .nav-logo { height: 36px; }
+  .nav-links { gap: .8rem; }
+  .nav-links a { font-size: .85rem; }
+}
+
 /* ─── BANNER ─── */
 .banner {
   margin-top: 64px;
-  width: 100%; height: 520px;
+  width: 100%;
   position: relative;
   overflow: hidden;
+  background: #f0f0f0;
 }
 .banner img {
-  width: 100%; height: 100%;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
   display: block;
+  max-height: 85vh;
+  object-fit: contain;
+  object-position: center;
 }
 
+@media (max-width: 768px) {
+  .banner img {
+    max-height: 55vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner img {
+    max-height: 40vh;
+  }
+}
 
 /* ─── HORARIO ─── */
 #horario {
@@ -91,13 +111,14 @@ nav {
   text-shadow: 2px 2px 0 var(--negro);
   margin-bottom: 2.5rem;
   position: relative;
+  display: inline-block;
 }
 #horario h2::after {
   content: '🦴';
   position: absolute;
-  right: -3rem;
-  top: -.5rem;
-  font-size: 2.2rem;
+  right: -2.8rem;
+  top: -.3rem;
+  font-size: 2rem;
   animation: bounce 1.5s infinite;
 }
 @keyframes bounce {
@@ -115,6 +136,7 @@ nav {
   border-radius: 20px;
   overflow: hidden;
   width: 320px;
+  max-width: 90vw;
   cursor: pointer;
   box-shadow: var(--sombra);
   border: 4px solid transparent;
@@ -176,7 +198,8 @@ nav {
   border-radius: 24px;
   width: 100%; max-width: 560px;
   max-height: 90vh;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 24px 80px rgba(0,0,0,0.4);
   animation: modalPop .4s cubic-bezier(.34,1.56,.64,1) both;
   position: relative;
@@ -190,6 +213,7 @@ nav {
   padding: 1.6rem 2rem;
   border-radius: 24px 24px 0 0;
   display: flex; align-items: center; gap: 1rem;
+  flex-shrink: 0;
 }
 .modal-header h2 {
   font-family: 'Bangers', cursive;
@@ -206,9 +230,15 @@ nav {
   border-radius: 50%; width: 36px; height: 36px;
   display: flex; align-items: center; justify-content: center;
   transition: background .2s;
+  flex-shrink: 0;
 }
 .modal-close:hover { background: rgba(255,255,255,0.4); }
-.modal-body { padding: 1.5rem 2rem 2rem; }
+.modal-body {
+  padding: 1.5rem 2rem 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
 
 .menu-item {
   display: flex; align-items: center; gap: 1rem;
@@ -230,7 +260,7 @@ nav {
   background: #FFF3F3;
 }
 .menu-item-emoji { font-size: 2.8rem; flex-shrink: 0; }
-.menu-item-info { flex: 1; }
+.menu-item-info { flex: 1; min-width: 0; }
 .menu-item-info h4 {
   font-family: 'Fredoka One', cursive;
   font-size: 1.2rem;
@@ -242,6 +272,7 @@ nav {
   font-size: 1.5rem;
   color: var(--rojo);
   letter-spacing: 1px;
+  white-space: nowrap;
 }
 .menu-check {
   position: absolute; top: .7rem; right: .7rem;
@@ -268,6 +299,7 @@ nav {
   font-size: 1.1rem;
   letter-spacing: 1px;
   transition: transform .2s, box-shadow .2s;
+  text-align: center;
 }
 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 .btn:active { transform: translateY(0); }
@@ -304,6 +336,7 @@ nav {
   font-family: 'Fredoka One', cursive;
   font-size: 1rem;
   transition: all .25s;
+  justify-content: center;
 }
 .delivery-btn:hover, .delivery-btn.active {
   border-color: var(--rojo);
@@ -369,52 +402,91 @@ nav {
   color: var(--rojo-oscuro);
   transform: translateY(-3px);
 }
-.mesa.occupied {
-  background: #FFCDD2;
-  border-color: #E57373;
-  cursor: not-allowed;
-  opacity: .7;
-}
 .mesa-num { font-size: 1.4rem; }
 .mesa-icon { font-size: 1.1rem; }
-.leyenda {
-  display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
-  justify-content: center;
+
+/* ─── RESERVA ─── */
+.reserva-grid {
+  display: flex;
+  gap: 1rem;
+  margin-top: .5rem;
 }
-.leyenda-item {
-  display: flex; align-items: center; gap: .4rem;
-  font-size: .82rem; color: #666;
+.reserva-select,
+.reserva-input {
+  flex: 1;
+  padding: .8rem 1rem;
+  border-radius: 12px;
+  border: 2.5px solid #ddd;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: var(--negro);
+  background: var(--blanco);
+  transition: border-color .25s;
+  cursor: pointer;
 }
-.dot {
-  width: 14px; height: 14px;
-  border-radius: 3px;
+.reserva-select:focus,
+.reserva-input:focus {
+  border-color: var(--rojo);
+  outline: none;
 }
 
-/* ─── CONFIRMACIÓN ─── */
-.confirm-box {
-  background: #F0FFF4;
-  border: 2px solid #4CAF50;
-  border-radius: 16px;
-  padding: 1.5rem;
-  text-align: center;
-  display: none;
+/* ─── POPUP ─── */
+.popup-overlay {
+  z-index: 1001;
 }
-.confirm-box.show { display: block; }
-.confirm-box h3 {
+.popup {
+  background: var(--blanco);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  animation: modalPop .4s cubic-bezier(.34,1.56,.64,1) both;
+  position: relative;
+}
+.popup h3 {
   font-family: 'Bangers', cursive;
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #2E7D32;
   letter-spacing: 2px;
+  margin-top: .5rem;
 }
-.confirm-box p { margin-top: .5rem; font-size: 1rem; color: #555; }
-.confirm-detail {
-  background: var(--blanco);
-  border-radius: 10px;
-  padding: 1rem;
-  margin: 1rem 0;
-  font-weight: 700;
+.popup-body {
+  background: #F0FFF4;
+  border: 2px solid #4CAF50;
+  border-radius: 14px;
+  padding: 1.2rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+.popup-row {
+  display: flex;
+  justify-content: space-between;
+  padding: .4rem 0;
+  gap: .5rem;
+}
+.popup-row + .popup-row {
+  border-top: 1px solid #C8E6C9;
+}
+.popup-label {
+  font-size: .9rem;
+  color: #666;
+  font-weight: 600;
+}
+.popup-value {
+  font-size: .9rem;
   color: var(--negro);
-  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: right;
+}
+.popup-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.popup-actions .btn {
+  flex: 1;
 }
 
 /* ─── UBICACIÓN ─── */
@@ -454,26 +526,6 @@ nav {
   margin-bottom: 1.5rem;
   letter-spacing: 1px;
 }
-.wa-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: .8rem;
-  background: #25D366;
-  color: var(--blanco);
-  text-decoration: none;
-  font-family: 'Fredoka One', cursive;
-  font-size: 1.2rem;
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  box-shadow: 0 6px 24px rgba(37,211,102,0.4);
-  transition: transform .25s, box-shadow .25s;
-  letter-spacing: 1px;
-}
-.wa-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 36px rgba(37,211,102,0.6);
-}
-.wa-btn svg { width: 28px; height: 28px; fill: var(--blanco); }
 
 /* ─── FOOTER ─── */
 footer {
@@ -507,7 +559,22 @@ footer span { color: var(--amarillo); }
 .toast.show { transform: translateY(0); opacity: 1; }
 
 @media (max-width: 600px) {
+  #horario { padding: 3rem 1rem 2rem; }
   .meal-cards { flex-direction: column; align-items: center; }
-  .mesas-grid { grid-template-columns: repeat(5, 1fr); gap: .5rem; }
+  .meal-card { width: 100%; }
   .modal { border-radius: 18px; }
+  .modal-header { padding: 1.2rem 1.5rem; }
+  .modal-header h2 { font-size: 1.5rem; }
+  .modal-body { padding: 1rem 1.2rem 1.5rem; }
+  .mesas-grid { grid-template-columns: repeat(5, 1fr); gap: .5rem; }
+  .reserva-grid { flex-direction: column; }
+  .popup { padding: 1.5rem 1.2rem; }
+  .popup-actions { flex-direction: column; }
+  #ubicacion { padding: 3rem 1rem; }
+  .map-wrapper iframe { height: 300px; }
+}
+
+@media (max-width: 480px) {
+  .map-wrapper iframe { height: 250px; }
+  .banner img { max-height: 40vh; }
 }

@@ -5,15 +5,14 @@ export default function Navbar() {
 
   return (
     <nav>
-      <div className="nav-logo">🍔 THE GORDO</div>
+      <img src="/logo.png" alt="The Gordo" className="nav-logo" />
       <ul className="nav-links">
         <li><a href="#horario" onClick={(e) => { e.preventDefault(); scrollTo('horario') }}>Menú</a></li>
         <li><a href="#ubicacion" onClick={(e) => { e.preventDefault(); scrollTo('ubicacion') }}>Ubicación</a></li>
         <li>
           <a
-            href="https://api.whatsapp.com/send?phone=573004536404&text=Hola%2C%20quiero%20hacer%20un%20pedido%2C%20%C2%BFme%20puedes%20compartir%20la%20carta%20por%20favor%3F%F0%9F%8D%94%F0%9F%94%A5"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#horario"
+            onClick={(e) => { e.preventDefault(); scrollTo('horario') }}
             style={{ color: 'var(--amarillo)' }}
           >
             📲 Pedir Ya

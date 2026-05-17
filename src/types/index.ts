@@ -13,6 +13,17 @@ export interface ModalState {
   item: { nombre: string; precio: string } | null
   delivery: DeliveryType | null
   mesa: number | null
+  fecha: string
+  hora: string
+}
+
+export interface PedidoConfirmado {
+  item: { nombre: string; precio: string }
+  delivery: DeliveryType
+  mesa: number | null
+  fecha: string
+  hora: string
+  tipo: MenuType
 }
 
 export const menuAlmuerzo: MenuItem[] = [
@@ -84,11 +95,13 @@ export const menuNoche: MenuItem[] = [
   },
 ]
 
-export const ocupadas: Record<MenuType, number[]> = {
-  almuerzo: [3, 7],
-  noche: [2, 5, 8],
+export function hoy(): string {
+  const d = new Date()
+  return d.toISOString().slice(0, 10)
 }
 
-export function estadoInicial(): ModalState {
-  return { item: null, delivery: null, mesa: null }
+export function manana(): string {
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  return d.toISOString().slice(0, 10)
 }
