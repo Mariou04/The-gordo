@@ -1,5 +1,6 @@
 export type MenuType = 'almuerzo' | 'noche'
-export type DeliveryType = 'llevar' | 'aqui'
+export type DeliveryType = 'llevar' | 'aqui' | 'domicilio'
+export type EstadoPedido = 'en cola' | 'entregado' | 'cancelado'
 
 export interface MenuItem {
   id: string
@@ -22,6 +23,9 @@ export interface ModalState {
   mesa: number | null
   fecha: string
   hora: string
+  nombre: string
+  telefono: string
+  direccion: string
 }
 
 export interface PedidoConfirmado {
@@ -32,6 +36,25 @@ export interface PedidoConfirmado {
   fecha: string
   hora: string
   tipo: MenuType
+  nombre: string
+  telefono: string
+  direccion: string
+}
+
+export interface PedidoDB {
+  id: number
+  items: ItemSeleccionado[]
+  total: number
+  tipo: MenuType
+  delivery: DeliveryType
+  nombre: string
+  telefono: string
+  direccion: string | null
+  mesa: number | null
+  fecha: string | null
+  hora: string | null
+  estado: EstadoPedido
+  created_at: string
 }
 
 export const menuAlmuerzo: MenuItem[] = [

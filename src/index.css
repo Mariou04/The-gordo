@@ -639,6 +639,153 @@ footer span { color: var(--amarillo); }
 }
 .toast.show { transform: translateY(0); opacity: 1; }
 
+/* ─── CAMPOS DE FORMULARIO ─── */
+.campo {
+  width: 100%;
+  padding: .8rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: var(--negro);
+  background: var(--blanco);
+  outline: none;
+  transition: border-color .2s;
+}
+.campo:focus {
+  border-color: var(--rojo);
+}
+.campo-area {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.4;
+}
+
+/* ─── ADMIN ─── */
+.admin-login {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gris-claro);
+  padding: 1rem;
+}
+.admin-login-box {
+  background: var(--blanco);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: var(--sombra);
+  width: 100%;
+  max-width: 380px;
+}
+.admin-login-box h2 {
+  font-family: 'Bangers', cursive;
+  font-size: 2rem;
+  color: var(--rojo);
+  letter-spacing: 2px;
+  margin: .5rem 0 1.5rem;
+}
+.admin-dash {
+  min-height: 100svh;
+  background: var(--gris-claro);
+}
+.admin-bar {
+  background: var(--rojo);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .8rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.admin-bar h2 {
+  font-family: 'Bangers', cursive;
+  font-size: 1.8rem;
+  color: var(--blanco);
+  letter-spacing: 2px;
+}
+.admin-bar-right {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+.admin-filtro {
+  padding: .5rem 1rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.15);
+  color: var(--blanco);
+  font-family: 'Fredoka One', cursive;
+  font-size: .85rem;
+  cursor: pointer;
+  outline: none;
+}
+.admin-filtro option { color: var(--negro); }
+.admin-tabla-wrap {
+  overflow-x: auto;
+  padding: 1.5rem 2rem;
+}
+.admin-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--blanco);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  min-width: 700px;
+}
+.admin-tabla th {
+  background: var(--rojo);
+  color: var(--blanco);
+  font-family: 'Fredoka One', cursive;
+  font-size: .85rem;
+  padding: .8rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+.admin-tabla td {
+  padding: .7rem 1rem;
+  font-size: .9rem;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+.admin-tabla tr:hover td { background: #FFF8F8; }
+.admin-tabla tr:last-child td { border-bottom: none; }
+.estado-badge {
+  display: inline-block;
+  padding: .25rem .7rem;
+  border-radius: 50px;
+  font-family: 'Fredoka One', cursive;
+  font-size: .75rem;
+  color: var(--blanco);
+}
+.estado-acciones {
+  display: flex;
+  gap: 6px;
+}
+.estado-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blanco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s;
+}
+.estado-btn:hover { transform: scale(1.15); }
+.estado-btn.entregado { background: #4CAF50; }
+.estado-btn.cancelado { background: #F44336; }
+.estado-btn.cola { background: #FF9800; }
+
 @media (max-width: 600px) {
   #horario { padding: 3rem 1rem 2rem; }
   .meal-cards { flex-direction: column; align-items: center; }

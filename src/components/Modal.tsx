@@ -33,7 +33,11 @@ const horasDisponibles = [
 ]
 
 function estadoInicial(): ModalState {
-  return { items: [], delivery: null, mesa: null, fecha: fechaHoy, hora: '12:00' }
+  return {
+    items: [], delivery: null, mesa: null,
+    fecha: fechaHoy, hora: '12:00',
+    nombre: '', telefono: '', direccion: '',
+  }
 }
 
 export default function Modal({ tipo, onCerrar }: Props) {
@@ -72,6 +76,10 @@ export default function Modal({ tipo, onCerrar }: Props) {
     setState((s) => ({ ...s, mesa: num }))
   }
 
+  function soloNumeros(val: string) {
+    return val.replace(/\D/g, '')
+  }
+
   const total = useMemo(
     () => state.items.reduce((sum, i) => sum + i.precioNum, 0),
     [state.items],
@@ -81,6 +89,9 @@ export default function Modal({ tipo, onCerrar }: Props) {
     const s = state
     if (s.items.length === 0) return
     if (!s.delivery) return
+    if (!s.nombre.trim()) return
+    if (!s.telefono.trim()) return
+    if (s.delivery === 'domicilio' && !s.direccion.trim()) return
     if (s.delivery === 'aqui' && !s.mesa) return
     setConfirmado({
       items: s.items,
@@ -90,6 +101,9 @@ export default function Modal({ tipo, onCerrar }: Props) {
       fecha: s.delivery === 'aqui' ? s.fecha : '',
       hora: s.delivery === 'aqui' ? s.hora : '',
       tipo,
+      nombre: s.nombre.trim(),
+      telefono: s.telefono,
+      direccion: s.direccion.trim(),
     })
   }
 
@@ -107,7 +121,25 @@ export default function Modal({ tipo, onCerrar }: Props) {
           </div>
 
           <div className="modal-body">
-            <div className="product-list-label">Productos</div>
+            <div className="divider" />
+            <p className="section-label">👤 Tus datos</p>
+            <input
+              className="campo"
+              placeholder="Nombre completo"
+              value={state.nombre}
+              onChange={(e) => setState((s) => ({ ...s, nombre: e.target.value }))}
+            />
+            <input
+              className="campo"
+              placeholder="Teléfono"
+              inputMode="numeric"
+              value={state.telefono}
+              onChange={(e) => setState((s) => ({ ...s, telefono: soloNumeros(e.target.value) }))}
+              style={{ marginTop: '.5rem' }}
+            />
+
+            <div className="divider" />
+            <p className="section-label">Productos</p>
             <div className="product-list">
               {menu.map((item) => {
                 const sel = state.items.some((i) => i.nombre === item.nombre)
@@ -151,9 +183,28 @@ export default function Modal({ tipo, onCerrar }: Props) {
                 className={`delivery-btn${state.delivery === 'aqui' ? ' active' : ''}`}
                 onClick={() => selectDelivery('aqui')}
               >
-                🪑 Para Comer Aquí
+                🪑 Comer Aquí
+              </button>
+              <button
+                className={`delivery-btn${state.delivery === 'domicilio' ? ' active' : ''}`}
+                onClick={() => selectDelivery('domicilio')}
+              >
+                🏠 Domicilio
               </button>
             </div>
+
+            {state.delivery === 'domicilio' && (
+              <>
+                <div className="divider" />
+                <p className="section-label">📍 Dirección de entrega</p>
+                <textarea
+                  className="campo campo-area"
+                  placeholder="Dirección completa (barrio, calle, casa #)"
+                  value={state.direccion}
+                  onChange={(e) => setState((s) => ({ ...s, direccion: e.target.value }))}
+                />
+              </>
+            )}
 
             {state.delivery === 'aqui' && (
               <>
