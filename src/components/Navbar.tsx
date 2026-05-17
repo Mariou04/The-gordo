@@ -18,6 +18,7 @@ export default function Navbar() {
             📲 Pedir Ya
           </a>
         </li>
+        <li><a href="/admin" style={{ color: '#aaa', fontSize: '.75rem' }}>Admin</a></li>
       </ul>
     </nav>
   )
