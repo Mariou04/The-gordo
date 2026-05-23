@@ -1,6 +1,6 @@
 export type MenuType = 'almuerzo' | 'noche'
 export type DeliveryType = 'llevar' | 'aqui' | 'domicilio'
-export type EstadoPedido = 'en cola' | 'entregado' | 'cancelado'
+export type EstadoPedido = 'en cola' | 'entregado' | 'cancelado' | 'finalizado'
 
 export interface MenuItem {
   id: string

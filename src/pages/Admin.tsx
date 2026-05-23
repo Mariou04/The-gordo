@@ -12,12 +12,20 @@ const estadoLabels: Record<EstadoPedido, string> = {
   'en cola': 'En cola',
   entregado: 'Entregado',
   cancelado: 'Cancelado',
+  finalizado: 'Finalizado',
 }
 
 const estadoColores: Record<EstadoPedido, string> = {
   'en cola': '#FF9800',
   entregado: '#4CAF50',
   cancelado: '#F44336',
+  finalizado: '#9E9E9E',
+}
+
+function debeFinalizar(p: PedidoDB): boolean {
+  if (p.estado !== 'en cola' || !p.fecha) return false
+  const fechaHora = new Date(`${p.fecha}T${p.hora || '12:00'}:00`)
+  return fechaHora < new Date()
 }
 
 function resumenStats(pedidos: PedidoDB[]) {
@@ -26,6 +34,7 @@ function resumenStats(pedidos: PedidoDB[]) {
     cola: pedidos.filter((p) => p.estado === 'en cola').length,
     entregado: pedidos.filter((p) => p.estado === 'entregado').length,
     cancelado: pedidos.filter((p) => p.estado === 'cancelado').length,
+    finalizado: pedidos.filter((p) => p.estado === 'finalizado').length,
     totalHoy: pedidos.filter((p) => {
       if (!p.created_at) return false
       return p.created_at.slice(0, 10) === new Date().toISOString().slice(0, 10)
@@ -61,7 +70,17 @@ export default function Admin() {
     if (error) {
       setErr(error.message)
     } else if (data) {
-      setPedidos(data as PedidoDB[])
+      let pedidos = data as PedidoDB[]
+      const aFinalizar = pedidos.filter(debeFinalizar)
+      for (const p of aFinalizar) {
+        await supabase.from('pedidos').update({ estado: 'finalizado' }).eq('id', p.id)
+      }
+      if (aFinalizar.length > 0) {
+        pedidos = pedidos.map((p) =>
+          debeFinalizar(p) ? { ...p, estado: 'finalizado' as const } : p,
+        )
+      }
+      setPedidos(pedidos)
     }
     setCargando(false)
   }
@@ -131,6 +150,7 @@ export default function Admin() {
             <option value="en cola">En cola</option>
             <option value="entregado">Entregado</option>
             <option value="cancelado">Cancelado</option>
+            <option value="finalizado">Finalizado</option>
           </select>
           <button className="btn btn-outline" style={{ flex: 0, padding: '.5rem 1rem', fontSize: '.85rem', color: '#fff', borderColor: 'rgba(255,255,255,0.5)' }} onClick={() => setVista('login')}>
             Salir
@@ -161,6 +181,10 @@ export default function Admin() {
           <div className="admin-stat-card">
             <div className="stat-num" style={{ color: '#F44336' }}>{stats.cancelado}</div>
             <div className="stat-label">Cancelado</div>
+          </div>
+          <div className="admin-stat-card">
+            <div className="stat-num" style={{ color: '#9E9E9E' }}>{stats.finalizado}</div>
+            <div className="stat-label">Finalizado</div>
           </div>
           <div className="admin-stat-card">
             <div className="stat-num" style={{ color: '#2196F3' }}>{stats.totalHoy}</div>
