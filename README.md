@@ -14,28 +14,32 @@ the-gordo/
 │   ├── almuerzos.jpg
 │   └── rapidas.jpg
 ├── src/
-│   ├── App.tsx              # Router: / (Home) y /admin
-│   ├── main.tsx             # Entry point
-│   ├── index.css            # Todos los estilos
-│   ├── env.d.ts             # Tipos para VITE_ env vars
-│   ├── assets/
-│   │   └── hero.png
-│   ├── components/
-│   │   ├── Navbar.tsx       # Navbar con logo
-│   │   ├── Banner.tsx       # Banner principal
-│   │   ├── Horarios.tsx     # Tarjetas almuerzo/noche
-│   │   ├── Modal.tsx        # Modal de pedido (multi-producto + datos + entrega)
-│   │   ├── ConfirmPopup.tsx # Popup de confirmación + guardado Supabase
-│   │   ├── Ubicacion.tsx    # Mapa y ubicación
-│   │   ├── Toast.tsx        # Notificaciones
-│   │   └── Footer.tsx
-│   ├── pages/
-│   │   └── Admin.tsx        # Login + dashboard + gestión de pedidos
-│   ├── lib/
-│   │   └── supabase.ts      # Cliente Supabase
-│   └── types/
-│       └── index.ts         # Tipos, menús, helpers
-├── migracion.sql            # Script SQL para crear tabla pedidos
+│   ├── js/
+│   │   ├── main.tsx             # Entry point
+│   │   ├── App.tsx              # Router: / (Home) y /admin
+│   │   ├── env.d.ts             # Tipos para VITE_ env vars
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx       # Navbar con logo
+│   │   │   ├── Banner.tsx       # Banner principal
+│   │   │   ├── Horarios.tsx     # Tarjetas almuerzo/noche
+│   │   │   ├── Modal.tsx        # Modal de pedido (multi-producto + datos + entrega)
+│   │   │   ├── ConfirmPopup.tsx # Popup de confirmación + guardado Supabase
+│   │   │   ├── Ubicacion.tsx    # Mapa y ubicación
+│   │   │   ├── Toast.tsx        # Notificaciones
+│   │   │   └── Footer.tsx
+│   │   ├── pages/
+│   │   │   └── Admin.tsx        # Login + dashboard + gestión de pedidos
+│   │   ├── lib/
+│   │   │   └── supabase.ts      # Cliente Supabase
+│   │   └── types/
+│   │       └── index.ts         # Tipos, menús, helpers
+│   └── css/
+│       ├── index.css            # Importa todos los CSS
+│       ├── global.css           # Reset, :root, base
+│       ├── components.css       # Estilos de componentes
+│       └── admin.css            # Estilos del panel admin
+├── migracion.sql            # Script SQL para crear/alterar tabla pedidos
+├── vercel.json              # Config SPA routing para Vercel
 ├── .env                     # Variables de entorno (gitignored)
 ├── index.html
 ├── vite.config.ts
