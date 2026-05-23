@@ -2,6 +2,8 @@
 
 App web de comidas rápidas para **The Gordo** — menú de almuerzo y noche, pedidos online con opciones de llevar, comer aquí o domicilio, y panel de administración.
 
+> **Admin:** `/admin` — usuario `admin` / contraseña `gordo2025`
+
 ## Estructura del proyecto
 
 ```
