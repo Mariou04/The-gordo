@@ -23,6 +23,7 @@ export default function ConfirmPopup({ pedido, onCerrar }: Props) {
         telefono: pedido.telefono,
         direccion: pedido.delivery === 'domicilio' ? pedido.direccion : null,
         mesa: pedido.delivery === 'aqui' ? pedido.mesa : null,
+        personas: pedido.delivery === 'aqui' ? pedido.personas : null,
         fecha: pedido.delivery === 'aqui' ? pedido.fecha : null,
         hora: pedido.delivery === 'aqui' ? pedido.hora : null,
         estado: 'en cola',
@@ -100,6 +101,10 @@ export default function ConfirmPopup({ pedido, onCerrar }: Props) {
                   <div className="popup-row">
                     <span className="popup-label">Mesa</span>
                     <span className="popup-value">#{pedido.mesa}</span>
+                  </div>
+                  <div className="popup-row">
+                    <span className="popup-label">Personas</span>
+                    <span className="popup-value">{pedido.personas}</span>
                   </div>
                   <div className="popup-row">
                     <span className="popup-label">Fecha</span>

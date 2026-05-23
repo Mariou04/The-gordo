@@ -21,6 +21,7 @@ export interface ModalState {
   items: ItemSeleccionado[]
   delivery: DeliveryType | null
   mesa: number | null
+  personas: number
   fecha: string
   hora: string
   nombre: string
@@ -33,6 +34,7 @@ export interface PedidoConfirmado {
   total: number
   delivery: DeliveryType
   mesa: number | null
+  personas: number
   fecha: string
   hora: string
   tipo: MenuType
@@ -51,6 +53,7 @@ export interface PedidoDB {
   telefono: string
   direccion: string | null
   mesa: number | null
+  personas: number | null
   fecha: string | null
   hora: string | null
   estado: EstadoPedido

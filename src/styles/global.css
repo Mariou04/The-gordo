@@ -1,0 +1,36 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --amarillo: #FFD600;
+  --rojo: #E53935;
+  --rojo-oscuro: #B71C1C;
+  --blanco: #FFFFFF;
+  --negro: #1A1A1A;
+  --gris-claro: #F5F5F5;
+  --sombra: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--blanco);
+  color: var(--negro);
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%; max-width: 100%; margin: 0; text-align: left;
+  border: none; min-height: 100svh; display: block;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: var(--rojo); border-radius: 4px; }
+
+.campo {
+  width: 100%; padding: .8rem 1rem; border: 2px solid #ddd;
+  border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 1rem;
+  color: var(--negro); background: var(--blanco); outline: none;
+  transition: border-color .2s;
+}
+.campo:focus { border-color: var(--rojo); }
+.campo-area { resize: vertical; min-height: 80px; line-height: 1.4; }
