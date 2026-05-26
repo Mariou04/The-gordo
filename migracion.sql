@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS pedidos (
   telefono TEXT NOT NULL DEFAULT '',
   direccion TEXT,
   mesa INT,
-  personas INT,
   fecha TEXT,
   hora TEXT,
   estado TEXT NOT NULL DEFAULT 'en cola',

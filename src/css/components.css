@@ -130,11 +130,6 @@ nav {
 .mesa-sm:hover { background: #FFF8E1; border-color: var(--rojo); transform: translateY(-2px); }
 .mesa-sm.selected { background: var(--amarillo); border-color: var(--rojo); color: var(--rojo-oscuro); }
 
-/* ─── PERSONAS ─── */
-.personas-row { display: flex; align-items: center; gap: .8rem; margin-top: .5rem; }
-.personas-row label { font-family: 'Fredoka One', cursive; font-size: .9rem; color: #666; white-space: nowrap; }
-.personas-input { width: 70px; text-align: center; font-size: 1.1rem; font-weight: 700; }
-
 /* ─── FECHA / HORA ─── */
 .fecha-toggles { display: flex; gap: .8rem; }
 .fecha-btn {

@@ -34,7 +34,7 @@ const horasDisponibles = [
 
 function estadoInicial(): ModalState {
   return {
-    items: [], delivery: null, mesa: null, personas: 1,
+    items: [], delivery: null, mesa: null,
     fecha: fechaHoy, hora: '12:00',
     nombre: '', telefono: '', direccion: '',
   }
@@ -98,7 +98,6 @@ export default function Modal({ tipo, onCerrar }: Props) {
       total,
       delivery: s.delivery,
       mesa: s.mesa,
-      personas: s.delivery === 'aqui' ? s.personas : 0,
       fecha: s.delivery === 'aqui' ? s.fecha : '',
       hora: s.delivery === 'aqui' ? s.hora : '',
       tipo,
@@ -221,20 +220,6 @@ export default function Modal({ tipo, onCerrar }: Props) {
                       🪑 {num}
                     </div>
                   ))}
-                </div>
-
-                <div className="divider" />
-                <p className="section-label">👥 Número de personas</p>
-                <div className="personas-row">
-                  <label>Comensales:</label>
-                  <input
-                    className="campo personas-input"
-                    type="number"
-                    min={1}
-                    max={20}
-                    value={state.personas}
-                    onChange={(e) => setState((s) => ({ ...s, personas: Math.max(1, Math.min(20, Number(e.target.value) || 1)) }))}
-                  />
                 </div>
 
                 <div className="divider" />

@@ -104,7 +104,7 @@ export default function Admin() {
   }
 
   function deliveryLabel(p: PedidoDB) {
-    if (p.delivery === 'aqui') return `Mesa ${p.mesa}${p.personas ? ` (${p.personas} pers.)` : ''}`
+    if (p.delivery === 'aqui') return `Mesa ${p.mesa}`
     if (p.delivery === 'domicilio') return 'Domicilio'
     return 'Llevar'
   }
@@ -291,12 +291,6 @@ export default function Admin() {
                   <span className="detalle-label">Mesa</span>
                   <span className="detalle-value">#{detalle.mesa}</span>
                 </div>
-                {detalle.personas && (
-                  <div className="detalle-row">
-                    <span className="detalle-label">Personas</span>
-                    <span className="detalle-value">{detalle.personas}</span>
-                  </div>
-                )}
                 <div className="detalle-row">
                   <span className="detalle-label">Fecha / Hora</span>
                   <span className="detalle-value">{detalle.fecha} {detalle.hora}</span>
